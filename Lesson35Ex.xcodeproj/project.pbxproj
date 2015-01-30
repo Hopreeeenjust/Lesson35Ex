@@ -14,6 +14,9 @@
 		E0FF9F8F1A7BB0DC00433B56 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0FF9F8E1A7BB0DC00433B56 /* Images.xcassets */; };
 		E0FF9F921A7BB0DC00433B56 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0FF9F901A7BB0DC00433B56 /* LaunchScreen.xib */; };
 		E0FF9F9E1A7BB0DC00433B56 /* Lesson35ExTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FF9F9D1A7BB0DC00433B56 /* Lesson35ExTests.m */; };
+		E0FF9FA91A7BB24B00433B56 /* RJStudent.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FF9FA81A7BB24B00433B56 /* RJStudent.m */; };
+		E0FF9FAC1A7BBF6500433B56 /* RJSection.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FF9FAB1A7BBF6500433B56 /* RJSection.m */; };
+		E0FF9FAF1A7BC38300433B56 /* NSArray+RJSorting.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FF9FAE1A7BC38300433B56 /* NSArray+RJSorting.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +43,12 @@
 		E0FF9F971A7BB0DC00433B56 /* Lesson35ExTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Lesson35ExTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0FF9F9C1A7BB0DC00433B56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E0FF9F9D1A7BB0DC00433B56 /* Lesson35ExTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Lesson35ExTests.m; sourceTree = "<group>"; };
+		E0FF9FA71A7BB24B00433B56 /* RJStudent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJStudent.h; sourceTree = "<group>"; };
+		E0FF9FA81A7BB24B00433B56 /* RJStudent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJStudent.m; sourceTree = "<group>"; };
+		E0FF9FAA1A7BBF6500433B56 /* RJSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJSection.h; sourceTree = "<group>"; };
+		E0FF9FAB1A7BBF6500433B56 /* RJSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJSection.m; sourceTree = "<group>"; };
+		E0FF9FAD1A7BC38300433B56 /* NSArray+RJSorting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+RJSorting.h"; sourceTree = "<group>"; };
+		E0FF9FAE1A7BC38300433B56 /* NSArray+RJSorting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+RJSorting.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +90,12 @@
 		E0FF9F801A7BB0DB00433B56 /* Lesson35Ex */ = {
 			isa = PBXGroup;
 			children = (
+				E0FF9FAD1A7BC38300433B56 /* NSArray+RJSorting.h */,
+				E0FF9FAE1A7BC38300433B56 /* NSArray+RJSorting.m */,
+				E0FF9FA71A7BB24B00433B56 /* RJStudent.h */,
+				E0FF9FA81A7BB24B00433B56 /* RJStudent.m */,
+				E0FF9FAA1A7BBF6500433B56 /* RJSection.h */,
+				E0FF9FAB1A7BBF6500433B56 /* RJSection.m */,
 				E0FF9F851A7BB0DB00433B56 /* AppDelegate.h */,
 				E0FF9F861A7BB0DB00433B56 /* AppDelegate.m */,
 				E0FF9F881A7BB0DB00433B56 /* ViewController.h */,
@@ -220,6 +235,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0FF9F8A1A7BB0DB00433B56 /* ViewController.m in Sources */,
+				E0FF9FAF1A7BC38300433B56 /* NSArray+RJSorting.m in Sources */,
+				E0FF9FAC1A7BBF6500433B56 /* RJSection.m in Sources */,
+				E0FF9FA91A7BB24B00433B56 /* RJStudent.m in Sources */,
 				E0FF9F871A7BB0DB00433B56 /* AppDelegate.m in Sources */,
 				E0FF9F841A7BB0DB00433B56 /* main.m in Sources */,
 			);
