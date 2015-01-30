@@ -10,11 +10,13 @@
 #import "RJStudent.h"
 #import "RJSection.h"
 #import "NSArray+RJSorting.h"
+#import <CoreText/CoreText.h>
 
 @interface ViewController () <UITableViewDataSource>
 @property (strong, nonatomic) NSArray *studentsArray;
 @property (strong, nonatomic) NSArray *sectionsArray;
 @property (strong, nonatomic) NSString *filter;
+@property (assign, nonatomic) RJSortingOptions currentOptions;
 @end
 
 @implementation ViewController
@@ -29,7 +31,7 @@
     
     NSMutableArray *tempArray = [NSMutableArray array];
     
-    for (NSInteger i = 0; i < arc4random_uniform(31) + 30; i++) {
+    for (NSInteger i = 0; i < arc4random_uniform(31) + 50; i++) {
         RJStudent *student = [RJStudent new];
         student.firstName = [namesArray objectAtIndex:(int)(arc4random_uniform((int)[namesArray count] * 1000) / 1000)];
         student.lastName = [surnamesArray objectAtIndex:(int)(arc4random_uniform((int)[surnamesArray count] * 1000) / 1000)];
@@ -38,13 +40,17 @@
         [tempArray addObject:student];
     }
     self.studentsArray = [tempArray sortArrayWithOptions:RJSortingOptionsDate];
-    self.sectionsArray = [self generateSectionsFromArray:self.studentsArray withFilter:self.searchBar.text];
+    self.sectionsArray = [self generateSectionsFromArray:self.studentsArray withFilter:self.searchBar.text withOptions:RJSortingOptionsDate];
     [self.tableView reloadData];
-
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - UITableViewDataSource
@@ -71,7 +77,11 @@
     }
     RJSection *section = [self.sectionsArray objectAtIndex:indexPath.section];
     RJStudent *student = [section.sectionItems objectAtIndex:indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", student.firstName, student.lastName];
+    if (self.currentOptions == RJSortingOptionsSurname) {
+        cell.textLabel.text = [NSString stringWithFormat:@"%@, %@", student.lastName, student.firstName];
+    } else {
+        cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", student.firstName, student.lastName];
+    }
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", [formatter stringFromDate:student.birthDate]];
     return cell;
 }
@@ -81,7 +91,7 @@
     for (RJSection *section in self.sectionsArray) {
         NSString *month = section.sectionName;
         [indexArray addObject:month];
-    }
+    } 
     return indexArray;
 }
 
@@ -93,18 +103,31 @@
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    self.sectionsArray = [self generateSectionsFromArray:self.studentsArray withFilter:searchText];
+    self.sectionsArray = [self generateSectionsFromArray:self.studentsArray withFilter:searchText withOptions:self.currentOptions];
     [self.tableView reloadData];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    searchBar.text = @"";
     [searchBar setShowsCancelButton:NO animated:YES];
     [searchBar resignFirstResponder];
+    self.sectionsArray = [self generateSectionsFromArray:self.studentsArray withFilter:searchBar.text withOptions:self.currentOptions];
+    [self.tableView reloadData];
+}
+
+#pragma mark - Actions
+
+- (IBAction)searchControlValueChanged:(UISegmentedControl *)searchControl {
+    self.currentOptions = searchControl.selectedSegmentIndex;
+    NSArray *tempArray = [self.studentsArray sortArrayWithOptions:self.currentOptions];
+    self.studentsArray = tempArray;
+    self.sectionsArray = [self generateSectionsFromArray:self.studentsArray withFilter:self.searchBar.text withOptions:self.currentOptions];
+    [self.tableView reloadData];
 }
 
 #pragma mark - Help methods
 
-- (NSArray *)generateSectionsFromArray:(NSArray *)array withFilter:(NSString *)filter {
+- (NSArray *)generateDateSectionsFromArray:(NSArray *)array withFilter:(NSString *)filter {
     NSMutableArray *sectionsArray = [NSMutableArray array];
     NSDateFormatter *formatter = [NSDateFormatter new];
     [formatter setDateFormat:@"MMM"];
@@ -119,11 +142,52 @@
             section = [RJSection new];
             section.sectionName = currentMonth;
             section.sectionItems = [NSMutableArray array];
-            [section.sectionItems addObject:student];
             lastMonth = currentMonth;
             [sectionsArray addObject:section];
         }
         [section.sectionItems addObject:student];
+    }
+    return sectionsArray;
+}
+
+- (NSArray *)generateStringSectionsFromArray:(NSArray *)array withFilter:(NSString *)filter withOptions:(RJSortingOptions)options{
+    NSMutableArray *sectionsArray = [NSMutableArray array];
+    NSString *lastLetter = nil;
+    RJSection *section = nil;
+    for (RJStudent *student in array) {
+        NSString *searchSegment = nil;
+        if (options == RJSortingOptionsName) {
+            searchSegment = student.firstName;
+        } else {
+            searchSegment = student.lastName;
+        }
+        if ([filter length] > 0 && ([searchSegment rangeOfString:filter].location == NSNotFound)) {
+            continue;
+        }
+        NSString *currentLetter = nil;
+        if (options == RJSortingOptionsName) {
+            currentLetter = [student.firstName substringToIndex:1];
+        } else {
+            currentLetter = [student.lastName substringToIndex:1];
+        }
+        if (![currentLetter isEqualToString:lastLetter]) {
+            section = [RJSection new];
+            section.sectionName = currentLetter;
+            section.sectionItems = [NSMutableArray array];
+            lastLetter = currentLetter;
+            [sectionsArray addObject:section];
+        }
+        [section.sectionItems addObject:student];
+    }
+    return sectionsArray;
+}
+
+- (NSArray *)generateSectionsFromArray:(NSArray *)array withFilter:(NSString *)filter withOptions:(RJSortingOptions)options {
+    NSArray *sectionsArray = [NSArray new];
+    if (options == RJSortingOptionsDate) {
+        sectionsArray = [self generateDateSectionsFromArray:array withFilter:filter];
+    } else {
+        sectionsArray = [self generateStringSectionsFromArray:array withFilter:filter withOptions:options];
     }
     return sectionsArray;
 }

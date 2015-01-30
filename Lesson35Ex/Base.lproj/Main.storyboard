@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
-        <!--Students-->
+        <!--View Controller-->
         <scene sceneID="xWx-di-GJT">
             <objects>
                 <tableViewController storyboardIdentifier="ViewController" id="v6p-6e-ciO" customClass="ViewController" sceneMemberID="viewController">
@@ -38,15 +38,83 @@
                             <outlet property="delegate" destination="v6p-6e-ciO" id="fyt-g9-O5K"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Students" id="NBk-Co-HGx"/>
+                    <navigationItem key="navigationItem" id="NBk-Co-HGx">
+                        <nil key="title"/>
+                    </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="searchBar" destination="BYe-Gt-Yj0" id="Wyu-kc-Y88"/>
+                        <outlet property="searchControl" destination="lQ2-XA-iha" id="Fr2-mn-Qfs"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dYR-07-WS3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="470.5" y="273.5"/>
+            <point key="canvasLocation" x="666.5" y="1115.5"/>
+        </scene>
+        <!--Students-->
+        <scene sceneID="qPO-2t-bS6">
+            <objects>
+                <viewController id="bFs-Zc-Mtt" customClass="ViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="nEM-Vj-ArW">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="lQ2-XA-iha">
+                                <rect key="frame" x="16" y="70" width="320" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="Date"/>
+                                    <segment title="Name"/>
+                                    <segment title="Surname"/>
+                                </segments>
+                                <connections>
+                                    <action selector="searchControlValueChanged:" destination="bFs-Zc-Mtt" eventType="valueChanged" id="fA6-nL-Bi8"/>
+                                </connections>
+                            </segmentedControl>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="YrF-1Y-f36">
+                                <rect key="frame" x="0.0" y="106" width="375" height="561"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <searchBar key="tableHeaderView" contentMode="redraw" id="VRG-OV-cOY">
+                                    <rect key="frame" x="0.0" y="64" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <color key="barTintColor" red="0.94969803100000005" green="0.98645780920000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="search"/>
+                                    <scopeButtonTitles>
+                                        <string>Title</string>
+                                        <string>Title</string>
+                                    </scopeButtonTitles>
+                                    <connections>
+                                        <outlet property="delegate" destination="bFs-Zc-Mtt" id="FC1-QB-ush"/>
+                                    </connections>
+                                </searchBar>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="hfk-kA-edg">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hfk-kA-edg" id="BIJ-xg-5mi">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="bFs-Zc-Mtt" id="zNE-ar-YDQ"/>
+                                    <outlet property="delegate" destination="bFs-Zc-Mtt" id="LUl-sz-CvM"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Students" id="MW5-xh-wpZ"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="searchBar" destination="VRG-OV-cOY" id="eJb-MO-8Oh"/>
+                        <outlet property="searchControl" destination="lQ2-XA-iha" id="7gn-d7-TcT"/>
+                        <outlet property="tableView" destination="YrF-1Y-f36" id="bOb-dF-J0p"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KbR-Di-oCx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="443.5" y="273.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="f4M-Rp-5Ox">
@@ -58,7 +126,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="v6p-6e-ciO" kind="relationship" relationship="rootViewController" id="yMX-6K-ODZ"/>
+                        <segue destination="bFs-Zc-Mtt" kind="relationship" relationship="rootViewController" id="gaq-Y5-EwG"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V8c-A3-yn2" userLabel="First Responder" sceneMemberID="firstResponder"/>

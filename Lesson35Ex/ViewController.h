@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UITableViewController
+@interface ViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *searchControl;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
+- (IBAction)searchControlValueChanged:(UISegmentedControl *)searchControl;
 @end
 

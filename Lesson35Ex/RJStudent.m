@@ -10,4 +10,9 @@
 
 @implementation RJStudent
 
+- (NSString *)description {
+    NSString *fullName = [NSString stringWithFormat:@"%@ %@", [self firstName], [self lastName]];
+    return fullName;
+}
+
 @end
