@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface ViewController : UITableViewController
-
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @end
 

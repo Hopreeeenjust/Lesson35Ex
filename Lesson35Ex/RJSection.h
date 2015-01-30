@@ -10,5 +10,5 @@
 
 @interface RJSection : NSObject
 @property (strong, nonatomic) NSString *sectionName;
-@property (strong, nonatomic) NSArray *sectionItems;
+@property (strong, nonatomic) NSMutableArray *sectionItems;
 @end

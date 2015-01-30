@@ -13,6 +13,8 @@
 
 @interface ViewController () <UITableViewDataSource>
 @property (strong, nonatomic) NSArray *studentsArray;
+@property (strong, nonatomic) NSArray *sectionsArray;
+@property (strong, nonatomic) NSString *filter;
 @end
 
 @implementation ViewController
@@ -36,6 +38,9 @@
         [tempArray addObject:student];
     }
     self.studentsArray = [tempArray sortArrayWithOptions:RJSortingOptionsDate];
+    self.sectionsArray = [self generateSectionsFromArray:self.studentsArray withFilter:self.searchBar.text];
+    [self.tableView reloadData];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -44,8 +49,16 @@
 
 #pragma mark - UITableViewDataSource
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return [self.sectionsArray count];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return [[self.sectionsArray objectAtIndex:section] sectionName];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.studentsArray count];
+    return [[[self.sectionsArray objectAtIndex:section] sectionItems] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -56,16 +69,63 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
     }
-    RJStudent *student = [self.studentsArray objectAtIndex:indexPath.row];
+    RJSection *section = [self.sectionsArray objectAtIndex:indexPath.section];
+    RJStudent *student = [section.sectionItems objectAtIndex:indexPath.row];
     cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", student.firstName, student.lastName];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", [formatter stringFromDate:student.birthDate]];
     return cell;
 }
 
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+    NSMutableArray *indexArray = [NSMutableArray array];
+    for (RJSection *section in self.sectionsArray) {
+        NSString *month = section.sectionName;
+        [indexArray addObject:month];
+    }
+    return indexArray;
+}
+
+
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    [searchBar setShowsCancelButton:YES animated:YES];
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    self.sectionsArray = [self generateSectionsFromArray:self.studentsArray withFilter:searchText];
+    [self.tableView reloadData];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    [searchBar setShowsCancelButton:NO animated:YES];
+    [searchBar resignFirstResponder];
+}
+
 #pragma mark - Help methods
 
-- (NSArray *)generateSectionsFromArray:(NSArray *)array {
-    return array;
+- (NSArray *)generateSectionsFromArray:(NSArray *)array withFilter:(NSString *)filter {
+    NSMutableArray *sectionsArray = [NSMutableArray array];
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    [formatter setDateFormat:@"MMM"];
+    NSString *lastMonth = nil;
+    RJSection *section = nil;
+    for (RJStudent *student in array) {
+        if ([filter length] > 0 && ([student.firstName rangeOfString:filter].location == NSNotFound && [student.lastName rangeOfString:filter].location == NSNotFound)) {
+            continue;
+        }
+        NSString *currentMonth = [formatter stringFromDate:student.birthDate];
+        if (![currentMonth isEqualToString:lastMonth]) {
+            section = [RJSection new];
+            section.sectionName = currentMonth;
+            section.sectionItems = [NSMutableArray array];
+            [section.sectionItems addObject:student];
+            lastMonth = currentMonth;
+            [sectionsArray addObject:section];
+        }
+        [section.sectionItems addObject:student];
+    }
+    return sectionsArray;
 }
 
 @end
